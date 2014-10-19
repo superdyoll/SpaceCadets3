@@ -9,13 +9,15 @@ public class TheDragon extends JInternalFrame {
 
     Graphics buffer; //Used for double buffering
     BufferedImage offScreen; //Image that buffer will draw
-    private int paintIterator = 100; //Keep track of the number of pixels you have drawn
+    private int paintIterator = 100, frame_Width, frame_Height; //Keep track of the number of pixels you have drawn
     private float last_Time = 0f, delta_Time = 0f, pixels_Per_Sec = 500;
     private SpiroObject current_Spiro; //Array to contain all spiros in case we draw multiple objects
 
     public TheDragon(int width, int height) //First method called
     {
-        offScreen = (BufferedImage) createImage(width, height); //Some arbitrary screen size TODO: change this to screen dimensions
+    	frame_Width = width;
+    	frame_Height = height;
+        offScreen = (BufferedImage) createImage(frame_Width, frame_Height); //Some arbitrary screen size TODO: change this to screen dimensions
         buffer = offScreen.getGraphics(); //Assign the buffer to get the graphics from off screen
     }
     
@@ -61,7 +63,7 @@ public class TheDragon extends JInternalFrame {
 
     public BufferedImage getImage() 
     {
-    	buffer.setColor(getColour());
+    	buffer.clearRect(0, 0, frame_Width, frame_Height);
     	
     	if(last_Time != 0f)
     	{
@@ -80,7 +82,7 @@ public class TheDragon extends JInternalFrame {
              {
                     int x_Pos = current_Spiro.x_Vals.get(j); //Get the x and y values of the current pixel coordinate
                     int y_Pos = current_Spiro.y_Vals.get(j);
-
+                    buffer.setColor(getColour());
                     buffer.drawLine(x_Pos, y_Pos, x_Pos+1, y_Pos+1); //Draw the pixel
              }
         }
