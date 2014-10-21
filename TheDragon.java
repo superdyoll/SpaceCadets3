@@ -3,27 +3,21 @@ package spiro;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-import javax.swing.*;
-
-import java.util.ArrayList;
-
-public class TheDragon extends JInternalFrame {
-
-    Graphics buffer; //Used for double buffering
-    BufferedImage offScreen; //Image that buffer will draw
+public class TheDragon
+{
+    private Graphics buffer; //Used for double buffering
+    private BufferedImage offScreen; //Image that buffer will draw
     private int paintIterator = 100, frame_Width, frame_Height; //Keep track of the number of pixels you have drawn
     private float last_Time = 0f, delta_Time = 0f, pixels_Per_Sec = 500;
     private SpiroObject current_Spiro; //Array to contain all spiros in case we draw multiple objects
 
-    
-    //No input for R,r or O ?
-    public TheDragon(int width, int height) //First method called
+    public TheDragon(int width, int height, Graphics b, BufferedImage b_Image, SpiroObject spiro) //Pass these variables on construction and you won't have to worry about anything other than getimage()
     {
     	frame_Width = width;
     	frame_Height = height;
-        offScreen = (BufferedImage) createImage(frame_Width, frame_Height); //Some arbitrary screen size TODO: change this to screen dimensions
-        //There is something wrong with the following step as i get a null pointer exception
-        buffer = offScreen.getGraphics(); //Assign the buffer to get the graphics from off screen
+        offScreen = b_Image; //Some arbitrary screen size TODO: change this to screen dimensions
+        buffer = b; //Assign the buffer to get the graphics from off screen
+        current_Spiro = spiro;
     }
     
     private Color getColour()
@@ -87,56 +81,11 @@ public class TheDragon extends JInternalFrame {
              {
                     int x_Pos = current_Spiro.x_Vals.get(j); //Get the x and y values of the current pixel coordinate
                     int y_Pos = current_Spiro.y_Vals.get(j);
-                    buffer.setColor(getColour());
+                    buffer.setColor(Color.black);//getColour());
                     buffer.drawLine(x_Pos, y_Pos, x_Pos+1, y_Pos+1); //Draw the pixel
              }
         }
 
         return offScreen; //Draw the image
-    }
-
-    class SpiroObject //Spiro object
-    {
-        int radius_R, radius_r, oVal;
-        ArrayList<Color> spiro_Colours = new ArrayList<Color>();
-        ArrayList<Integer> x_Vals = new ArrayList<Integer>();
-        ArrayList<Integer> y_Vals = new ArrayList<Integer>();
-
-        SpiroObject(int R, int r, int o, Color[] colours) //Takes constructor for radius of large circle, small circle, and small circle offset
-        {
-            radius_R = R;
-            radius_r = r;
-            oVal = o;
-            
-            for(int i = 0; i < colours.length; ++i)
-            {
-            	spiro_Colours.add(colours[i]);
-            }
-            
-            spiro_Colours.add(colours[0]);
-
-            calculatePositions(); //Auto call the calculate positions method
-        }
-
-        private void calculatePositions() 
-        {
-        	 int t = 0; //Say some number is 0
-             
-             while(true) //Until break occurs
-             {
-                     int x_Temp = (radius_R + radius_r) * (int)Math.cos((double)t) - (radius_r + oVal) * (int)Math.cos((double)(((radius_R + radius_r)/radius_r) * t)); //Get the x coordinate for this value of t
-                     int y_Temp = (radius_R + radius_r) * (int)Math.sin((double)t) - (radius_r + oVal) * (int)Math.sin((double)(((radius_R + radius_r)/radius_r) * t)); //Same for y
-
-                     if(x_Temp == x_Vals.get(0) && y_Temp == y_Vals.get(0)) //If the two values equal the original value, we can stop
-                     {
-                             break; //Break out of the loop
-                     }
-                    
-                     x_Vals.add(x_Temp); //Add the x and y coordinates to the arrays
-                     y_Vals.add(y_Temp);
-                    
-                     ++t; //Increment t by 1
-             }
-        }
     }
 }
