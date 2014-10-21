@@ -7,6 +7,7 @@ package spiro;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.image.BufferedImage;
 
 /**
  *
@@ -167,10 +168,15 @@ public class TheGUI extends javax.swing.JFrame {
         int r = Integer.parseInt(textSmallR.getText());
         int R = Integer.parseInt(textLargeR.getText());
         int O = Integer.parseInt(textOffset.getText());
-        TheDragon myDragon = new TheDragon(frameDraw);
-        myDragon.createSpiroObject(R, r, O);
+        int width = frameDraw.getWidth();
+        int height = frameDraw.getHeight();
+        System.out.println(width);
+        System.out.println(height);
+        TheDragon myDragon = new TheDragon(width, height);
         Graphics g = frameDraw.getGraphics();
-        myDragon.paint(g, selectedColor);
+        BufferedImage myImage = myDragon.getImage();
+        Graphics drawnImage = myImage.getGraphics();
+        frameDraw.paint(drawnImage);
     }//GEN-LAST:event_btnDrawActionPerformed
 
     /**

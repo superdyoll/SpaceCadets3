@@ -1,3 +1,5 @@
+package spiro;
+
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
@@ -13,11 +15,14 @@ public class TheDragon extends JInternalFrame {
     private float last_Time = 0f, delta_Time = 0f, pixels_Per_Sec = 500;
     private SpiroObject current_Spiro; //Array to contain all spiros in case we draw multiple objects
 
+    
+    //No input for R,r or O ?
     public TheDragon(int width, int height) //First method called
     {
     	frame_Width = width;
     	frame_Height = height;
         offScreen = (BufferedImage) createImage(frame_Width, frame_Height); //Some arbitrary screen size TODO: change this to screen dimensions
+        //There is something wrong with the following step as i get a null pointer exception
         buffer = offScreen.getGraphics(); //Assign the buffer to get the graphics from off screen
     }
     
